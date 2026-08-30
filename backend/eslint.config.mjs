@@ -9,4 +9,17 @@ export default tseslint.config(
   {
     ignores: ['dist/', 'node_modules/'],
   },
+  {
+    files: ['*.config.js'],
+    languageOptions: {
+      sourceType: 'commonjs',
+      globals: {
+        require: 'readonly',
+        module: 'writable',
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
 );
