@@ -153,6 +153,7 @@ Suivi assuré via GitHub Issues / Project :
         - connexion PostgreSQL
         - pipeline CI/CD (lint, build, tests)
         - déploiement initial sur Render
+        - rédaction d'une première version du README
     1. Authentification
     2. CRUD cahier des charges
     3. Listing + recherche par mots clés
