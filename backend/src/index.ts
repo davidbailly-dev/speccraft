@@ -31,3 +31,5 @@ app.get('/health', async(req, res) => {
 app.listen(port, () => {
     console.log(`SpecCraft backend is listening on port ${port}`)
 })
+
+console.log(test_variable_inconnue)
