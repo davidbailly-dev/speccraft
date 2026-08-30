@@ -8,19 +8,21 @@
     "node": ">=24"
   },
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch --env-file=.env src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "node --env-file=.env dist/index.js",
     "lint": "eslint ."
   },
   "type": "commonjs",
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "pg": "^8.23.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/express": "^5.0.6",
     "@types/node": "^26.4.0",
+    "@types/pg": "^8.23.1",
     "@types/typescript": "^0.4.29",
     "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
