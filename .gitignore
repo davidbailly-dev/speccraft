@@ -4,6 +4,12 @@ node_modules/
 # Build output
 dist/
 .next/
+*.tsbuildinfo
+
+# Tests
+coverage/
+playwright-report/
+test-results/
 
 # Environment variables
 .env
@@ -13,5 +19,10 @@ dist/
 # Logs
 *.log
 
-# OS / editor
+# OS
 .DS_Store
+Thumbs.db
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
