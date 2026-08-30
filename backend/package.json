@@ -11,7 +11,8 @@
     "dev": "tsx watch --env-file=.env src/index.ts",
     "build": "tsc",
     "start": "node --env-file=.env dist/index.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "jest --passWithNoTests"
   },
   "type": "commonjs",
   "dependencies": {
@@ -21,17 +22,22 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
     "@types/node": "^26.4.0",
     "@types/pg": "^8.23.1",
     "@types/typescript": "^0.4.29",
     "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
+    "jest": "^30.5.0",
     "prettier": "^3.9.6",
+    "ts-jest": "^29.4.12",
     "tsx": "^4.23.13",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.68.0"
   },
   "allowScripts": {
-    "esbuild@0.28.2": true
+    "esbuild@0.28.2": true,
+    "@parcel/watcher@2.6.0": true,
+    "unrs-resolver@1.12.2": true
   }
 }
