@@ -169,6 +169,7 @@ Suivi assuré via GitHub Issues / Project :
     5. Brouillons & publication (versionning) : introduire la notion de brouillon et de publication versionnée d'un cahier des charges
 - Une branche `feature/*` (GitFlow) par jalon, liée aux issues correspondantes
 - Chaque jalon fonctionnel se découpe en sous-tâches backend puis frontend (via les issues GitHub)
+- Chaque issue GitHub suit une structure en 2 sections : `Tâches` (liste à cocher) et `Critères d'acceptation`
 - Le découpage en issues d'un jalon se fait au fur et à mesure du développement, juste avant de l'attaquer, et non à l'avance pour tous les jalons : les choix techniques faits sur un jalon peuvent influencer le découpage des jalons suivants, et une planification trop détaillée en amont risquerait de devenir obsolète
 
 ## 10. Annexes
