@@ -74,6 +74,7 @@ Le but est d'apporter plusieurs avantages à un cahier des charges :
     - Gestion de la session via un cookie `httpOnly`, `Secure` et `SameSite`
     - Validation des données d'entrée de l'API et limitation du nombre de tentatives de connexion (rate limiting) contre le bruteforce
     - CORS restreint au domaine du frontend, avec support des credentials (cookies)
+    - Mot de passe : au moins 8 caractères, avec au moins une majuscule, une minuscule, un chiffre et un caractère spécial
 - Gestion des secrets : variables d'environnement (`.env`), jamais commitées dans le dépôt
 - Observabilité : logging applicatif en production, consultable via les logs Render
 
