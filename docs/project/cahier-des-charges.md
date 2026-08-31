@@ -74,6 +74,7 @@ Le but est d'apporter plusieurs avantages à un cahier des charges :
     - Gestion de la session via un cookie `httpOnly`, `Secure` et `SameSite`
     - Validation des données d'entrée de l'API et limitation du nombre de tentatives de connexion (rate limiting) contre le bruteforce
     - CORS restreint au domaine du frontend, avec support des credentials (cookies)
+    - Mot de passe : au moins 8 caractères, avec au moins une majuscule, une minuscule, un chiffre et un caractère spécial
 - Gestion des secrets : variables d'environnement (`.env`), jamais commitées dans le dépôt
 - Observabilité : logging applicatif en production, consultable via les logs Render
 
@@ -155,6 +156,13 @@ Suivi assuré via GitHub Issues / Project :
         - déploiement initial sur Render
         - rédaction d'une première version du README
     1. Authentification : permettre à un utilisateur de créer un compte et de se connecter de façon sécurisée
+        - migration de la table `users` (node-pg-migrate)
+        - configuration de la session (express-session + connect-pg-simple)
+        - inscription, connexion, déconnexion (API)
+        - middleware d'authentification + utilisateur courant
+        - page Login (frontend)
+        - protection des routes selon l'état d'authentification
+        - dashboard minimal protégé (placeholder)
     2. CRUD cahier des charges : permettre de créer, consulter, modifier et supprimer ses cahiers des charges
     3. Listing + recherche par mots clés : permettre de retrouver rapidement un cahier des charges dans sa liste
     4. Export MarkDown : permettre d'exporter un cahier des charges au format MarkDown
