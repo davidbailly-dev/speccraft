@@ -155,6 +155,13 @@ Suivi assuré via GitHub Issues / Project :
         - déploiement initial sur Render
         - rédaction d'une première version du README
     1. Authentification : permettre à un utilisateur de créer un compte et de se connecter de façon sécurisée
+        - migration de la table `users` (node-pg-migrate)
+        - configuration de la session (express-session + connect-pg-simple)
+        - inscription, connexion, déconnexion (API)
+        - middleware d'authentification + utilisateur courant
+        - page Login (frontend)
+        - protection des routes selon l'état d'authentification
+        - dashboard minimal protégé (placeholder)
     2. CRUD cahier des charges : permettre de créer, consulter, modifier et supprimer ses cahiers des charges
     3. Listing + recherche par mots clés : permettre de retrouver rapidement un cahier des charges dans sa liste
     4. Export MarkDown : permettre d'exporter un cahier des charges au format MarkDown
