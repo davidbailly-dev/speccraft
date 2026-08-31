@@ -154,13 +154,14 @@ Suivi assuré via GitHub Issues / Project :
         - pipeline CI/CD (lint, build, tests)
         - déploiement initial sur Render
         - rédaction d'une première version du README
-    1. Authentification
-    2. CRUD cahier des charges
-    3. Listing + recherche par mots clés
-    4. Export MarkDown
-    5. Brouillons & publication (versionning)
+    1. Authentification : permettre à un utilisateur de créer un compte et de se connecter de façon sécurisée
+    2. CRUD cahier des charges : permettre de créer, consulter, modifier et supprimer ses cahiers des charges
+    3. Listing + recherche par mots clés : permettre de retrouver rapidement un cahier des charges dans sa liste
+    4. Export MarkDown : permettre d'exporter un cahier des charges au format MarkDown
+    5. Brouillons & publication (versionning) : introduire la notion de brouillon et de publication versionnée d'un cahier des charges
 - Une branche `feature/*` (GitFlow) par jalon, liée aux issues correspondantes
 - Chaque jalon fonctionnel se découpe en sous-tâches backend puis frontend (via les issues GitHub)
+- Le découpage en issues d'un jalon se fait au fur et à mesure du développement, juste avant de l'attaquer, et non à l'avance pour tous les jalons : les choix techniques faits sur un jalon peuvent influencer le découpage des jalons suivants, et une planification trop détaillée en amont risquerait de devenir obsolète
 
 ## 10. Annexes
 
