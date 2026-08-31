@@ -10,3 +10,4 @@ Documentation du projet dans `docs/` :
 - Le code applicatif est écrit à la main par l'utilisateur. Par défaut, expliquer ou montrer un exemple plutôt que d'éditer les fichiers de code — n'éditer le code que sur demande explicite.
 - La documentation projet (cahier des charges, ADR, modèle de données) peut être éditée directement.
 - Le `README.md` peut être rédigé et mis à jour par Claude Code, mais uniquement après confirmation explicite de l'utilisateur avant chaque édition.
+- Toute proposition de description d'issue GitHub suit une structure en 2 sections : `Tâches` (liste à cocher) et `Critères d'acceptation`
