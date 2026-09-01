@@ -12,7 +12,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "lint": "eslint .",
-    "test": "jest --passWithNoTests",
+    "test": "jest",
     "migrate:create": "node node_modules/.bin/node-pg-migrate create",
     "migrate:up": "node --env-file=.env node_modules/.bin/node-pg-migrate up",
     "migrate:down": "node --env-file=.env node_modules/.bin/node-pg-migrate down"
