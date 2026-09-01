@@ -30,5 +30,5 @@ export const up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 export const down = (pgm) => {
-    pgm.droptTable('session');
+    pgm.dropTable('session');
 };
