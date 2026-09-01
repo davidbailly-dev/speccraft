@@ -19,6 +19,7 @@
   },
   "type": "commonjs",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "connect-pg-simple": "^10.0.0",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/bcrypt": "^6.0.0",
     "@types/connect-pg-simple": "^7.0.3",
     "@types/express": "^5.0.6",
     "@types/express-session": "^1.19.0",
@@ -46,6 +48,7 @@
   "allowScripts": {
     "esbuild@0.28.2": true,
     "@parcel/watcher@2.6.0": true,
-    "unrs-resolver@1.12.2": true
+    "unrs-resolver@1.12.2": true,
+    "bcrypt@6.0.0": true
   }
 }
