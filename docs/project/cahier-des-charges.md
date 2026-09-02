@@ -85,7 +85,8 @@ Le but est d'apporter plusieurs avantages à un cahier des charges :
 - Base de données : PostgreSQL
 - Versionning : git et GitHub
 - CI/CD : GitHub Actions
-- Hébergement déploiement : `Render`
+- Hébergement de l'application : `Render`
+- Hébergement de la base de données : `Neon`
 
 ## 6. Parcours utilisateur
 
@@ -112,7 +113,7 @@ Le but est d'apporter plusieurs avantages à un cahier des charges :
 
 - Runtime : NodeJS
 - Framework : Express
-- Base de données : PostgreSQL (en ligne)
+- Base de données : PostgreSQL (hébergée sur `Neon`)
 - Documentation API : swagger-jsdoc + swagger-ui-express
 
 ### Frontend
