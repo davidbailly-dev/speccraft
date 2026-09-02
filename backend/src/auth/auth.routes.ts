@@ -5,13 +5,15 @@ import { DatabaseError } from "pg";
 import { normalizeEmail, isValidEmail, getPasswordErrors } from "./auth.validator";
 import { pool } from "../config/db";
 import { loginLimiter } from "./auth.rateLimit";
+import { requireAuth } from "./auth.requireAuth";
 
 // DUMMY_HASH placeholder = 'speccraft-project-rocks' / Cost = 12
 const DUMMY_HASH = '$2b$12$OGdYeI1idJH9WUFQ0VnW1eF4v3o9ladk3/uVl1BxJ0X84bcDJo73C';
 const BCRYPT_COST = 12;
-const MSG_EMAIL_ALREADY_USED = 'Cette adresse email est déjà utilisée';
-const MSG_EMAIL_AND_PASSWORD_REQUIRED = 'Les champs email et password sont requis';
-const MSG_WRONG_EMAIL_OR_PASSWORD = 'Email ou mot de passe invalide';
+const MSG_EMAIL_ALREADY_USED = "Cette adresse email est déjà utilisée";
+const MSG_EMAIL_AND_PASSWORD_REQUIRED = "Les champs email et password sont requis";
+const MSG_WRONG_EMAIL_OR_PASSWORD = "Email ou mot de passe invalide";
+const MSG_USER_NOT_FOUND = "Utilisateur introuvable"
 
 export const authRoutes = Router();
 
@@ -161,4 +163,26 @@ authRoutes.post('/logout', async(req, res) => {
 
     // Toujours indiquer succès pour ne pas donner de détails sur la réponse
     return res.sendStatus(204);
+});
+
+// Route retournant les infos de l'utilisateur connecté
+authRoutes.get('/me', requireAuth, async(req, res) => {
+    const userId = req.session.userId;
+    const user = await pool.query<{ email: string }>(
+        'SELECT email FROM users WHERE id = $1',
+        [userId]
+    );
+
+    if (user.rows.length === 0) {
+        return res.status(401).json({
+            errors: [MSG_USER_NOT_FOUND]
+        });
+    }
+
+    res.status(200).json({
+        user: {
+            id: userId,
+            email: user.rows[0].email,
+        },
+    });
 });
