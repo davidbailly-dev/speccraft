@@ -143,3 +143,22 @@ authRoutes.post('/login', loginLimiter, async(req, res) => {
         }
     });
 });
+
+// Route de déconnexion utilisateur
+authRoutes.post('/logout', async(req, res) => {
+    await new Promise<void>((resolve, reject) => {
+        req.session.destroy(function(err) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+
+    // Indique au navigateur qu'il doit supprimer le cookie stocké
+    res.clearCookie('connect.sid');
+
+    // Toujours indiquer succès pour ne pas donner de détails sur la réponse
+    return res.sendStatus(204);
+});
