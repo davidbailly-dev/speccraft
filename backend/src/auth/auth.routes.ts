@@ -1,9 +1,10 @@
 import { Router } from "express";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 import { DatabaseError } from "pg";
 
 import { normalizeEmail, isValidEmail, getPasswordErrors } from "./auth.validator";
 import { pool } from "../config/db";
+import { loginLimiter } from "./auth.rateLimit";
 
 // DUMMY_HASH placeholder = 'speccraft-project-rocks' / Cost = 12
 const DUMMY_HASH = '$2b$12$OGdYeI1idJH9WUFQ0VnW1eF4v3o9ladk3/uVl1BxJ0X84bcDJo73C';
@@ -84,7 +85,7 @@ authRoutes.post('/register', async(req, res) => {
 });
 
 // Route de login utilisateur existant
-authRoutes.post('/login', async(req, res) => {
+authRoutes.post('/login', loginLimiter, async(req, res) => {
     const { email, password } = req.body ?? {};
 
     // On vérifie le type de l'email et du mot de passe
