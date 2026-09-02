@@ -2,6 +2,12 @@ import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import { pool } from './db';
 
+declare module 'express-session' {
+    interface SessionData {
+        userId?: number
+    }
+}
+
 // Vérifie si SESSION_SECRET est défini
 const sessionSecret = process.env.SESSION_SECRET;
 
@@ -28,4 +34,4 @@ export const sessionMiddleware = session({
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax'
     },
-})
+});
