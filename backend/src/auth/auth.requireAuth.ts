@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
-const MSG_USER_NOT_AUTH = "Utilisateur non authentifié";
+export const MSG_USER_NOT_AUTH = "Utilisateur non authentifié";
 
 export function requireAuth(req: Request, res: Response, next: NextFunction) {
     const userId = req.session.userId;
