@@ -1,11 +1,20 @@
 import express, { type ErrorRequestHandler } from 'express';
+import cors from 'cors';
+
 import { sessionMiddleware } from './config/session';
 import { pool } from './config/db';
-
 import { authRoutes } from './auth/auth.routes';
 
 // Configure le serveur Express
 export const app = express();
+
+// Configure CORS
+const corsOptions = {
+    origin: process.env.FRONTEND_ORIGIN,
+    // credentials: true // Commenté pour tests, à décommenter
+};
+
+app.use(cors(corsOptions));
 
 // Pour compatibilité Render
 app.set('trust proxy', 1);
