@@ -5,7 +5,7 @@ import { DatabaseError } from "pg";
 import { normalizeEmail, isValidEmail, getPasswordErrors } from "./auth.validator";
 import { pool } from "../config/db";
 import { loginLimiter } from "./auth.rateLimit";
-import { requireAuth } from "./auth.requireAuth";
+import { requireAuth, MSG_USER_NOT_AUTH } from "./auth.requireAuth";
 
 // DUMMY_HASH placeholder = 'speccraft-project-rocks' / Cost = 12
 const DUMMY_HASH = '$2b$12$OGdYeI1idJH9WUFQ0VnW1eF4v3o9ladk3/uVl1BxJ0X84bcDJo73C';
@@ -13,7 +13,6 @@ const BCRYPT_COST = 12;
 const MSG_EMAIL_ALREADY_USED = "Cette adresse email est déjà utilisée";
 const MSG_EMAIL_AND_PASSWORD_REQUIRED = "Les champs email et password sont requis";
 const MSG_WRONG_EMAIL_OR_PASSWORD = "Email ou mot de passe invalide";
-const MSG_USER_NOT_FOUND = "Utilisateur introuvable"
 
 export const authRoutes = Router();
 
@@ -168,18 +167,39 @@ authRoutes.post('/logout', async(req, res) => {
 // Route retournant les infos de l'utilisateur connecté
 authRoutes.get('/me', requireAuth, async(req, res) => {
     const userId = req.session.userId;
+
+    if (userId === undefined) {
+        return res.status(401).json({
+            errors: [MSG_USER_NOT_AUTH]
+        });
+    }
+
     const user = await pool.query<{ email: string }>(
         'SELECT email FROM users WHERE id = $1',
         [userId]
     );
 
     if (user.rows.length === 0) {
+        // On détruit la session
+        await new Promise<void>((resolve, reject) => {
+            req.session.destroy(function(err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+
+        // Indique au navigateur qu'il doit supprimer le cookie stocké
+        res.clearCookie('connect.sid');
+
         return res.status(401).json({
-            errors: [MSG_USER_NOT_FOUND]
+            errors: [MSG_USER_NOT_AUTH]
         });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
         user: {
             id: userId,
             email: user.rows[0].email,
