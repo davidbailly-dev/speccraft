@@ -11,7 +11,7 @@ export const app = express();
 // Configure CORS
 const corsOptions = {
     origin: process.env.FRONTEND_ORIGIN,
-    // credentials: true // Commenté pour tests, à décommenter
+    credentials: true,
 };
 
 app.use(cors(corsOptions));
