@@ -179,7 +179,7 @@ authRoutes.get('/me', requireAuth, async(req, res) => {
         });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
         user: {
             id: userId,
             email: user.rows[0].email,
