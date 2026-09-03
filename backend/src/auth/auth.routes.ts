@@ -168,6 +168,13 @@ authRoutes.post('/logout', async(req, res) => {
 // Route retournant les infos de l'utilisateur connecté
 authRoutes.get('/me', requireAuth, async(req, res) => {
     const userId = req.session.userId;
+
+    if (userId === undefined) {
+        return res.status(401).json({
+            errors: [MSG_USER_NOT_FOUND]
+        });
+    }
+
     const user = await pool.query<{ email: string }>(
         'SELECT email FROM users WHERE id = $1',
         [userId]
