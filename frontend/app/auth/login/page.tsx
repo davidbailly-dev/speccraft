@@ -4,6 +4,7 @@ import { useEffect, useActionState, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import Input from '@/components/ui/Input';
+import Button from '@/components/ui/Button';
 import MessageBox from '@/components/ui/MessageBox';
 import { login } from '@/libs/api/auth';
 import { LoginResult } from '@/libs/api/types';
@@ -52,7 +53,7 @@ export default function LoginPage() {
             >
                 <Input type="text" name="email" placeholder="Email" />
                 <Input type="password" name="password" placeholder="Mot de passe" />
-                <button type="submit" disabled={pending}>Se connecter</button>
+                <Button type="submit" disabled={pending}>Se connecter</Button>
             </form>
             { showMessageBox &&
                 <MessageBox
