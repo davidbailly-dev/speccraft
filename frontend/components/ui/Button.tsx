@@ -1,18 +1,21 @@
 interface ButtonProps {
-    label: string,
     type: 'button' | 'submit' | 'reset' | undefined,
+    disabled?: boolean,
+    children: React.ReactNode,
 }
 
 export default function Button({
-    label = 'non défini',
-    type = 'button'
+    type = 'button',
+    disabled = false,
+    children
 }: ButtonProps) {
     return (
         <button
             type={type}
             className="bg-blue-700 hover:bg-blue-500 rounded-lg p-2 cursor-pointer"
+            disabled={disabled}
         >
-            {label}
+            {children}
         </button>
     )
 }
