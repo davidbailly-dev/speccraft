@@ -1,18 +1,19 @@
-import { Router } from "express";
-import bcrypt from "bcrypt";
-import { DatabaseError } from "pg";
+import { Router } from 'express';
+import bcrypt from 'bcrypt';
+import { DatabaseError } from 'pg';
 
-import { normalizeEmail, isValidEmail, getPasswordErrors } from "./auth.validator";
-import { pool } from "../config/db";
-import { loginLimiter } from "./auth.rateLimit";
-import { requireAuth, MSG_USER_NOT_AUTH } from "./auth.requireAuth";
+import { normalizeEmail, isValidEmail, getPasswordErrors } from './auth.validator';
+import { pool } from '../config/db';
+import { loginLimiter } from './auth.rateLimit';
+import { requireAuth, MSG_USER_NOT_AUTH } from './auth.requireAuth';
+import { createSession } from './auth.session';
 
 // DUMMY_HASH placeholder = 'speccraft-project-rocks' / Cost = 12
 const DUMMY_HASH = '$2b$12$OGdYeI1idJH9WUFQ0VnW1eF4v3o9ladk3/uVl1BxJ0X84bcDJo73C';
 const BCRYPT_COST = 12;
-const MSG_EMAIL_ALREADY_USED = "Cette adresse email est déjà utilisée";
-const MSG_EMAIL_AND_PASSWORD_REQUIRED = "Les champs email et password sont requis";
-const MSG_WRONG_EMAIL_OR_PASSWORD = "Email ou mot de passe invalide";
+const MSG_EMAIL_ALREADY_USED = 'Cette adresse email est déjà utilisée';
+const MSG_EMAIL_AND_PASSWORD_REQUIRED = 'Les champs email et password sont requis';
+const MSG_WRONG_EMAIL_OR_PASSWORD = 'Email ou mot de passe invalide';
 
 export const authRoutes = Router();
 
@@ -60,7 +61,7 @@ authRoutes.post('/register', async(req, res) => {
         });
     }
 
-    // Créé l'utilisateur en DB
+    // Crée l'utilisateur en DB
     const passwordHash = await bcrypt.hash(password, BCRYPT_COST);
 
     try {
@@ -70,6 +71,8 @@ authRoutes.post('/register', async(req, res) => {
         );
 
         const user = result.rows[0];
+
+        await createSession(req, user.id);
 
         return res.status(201).json({
             user: { id: user.id, email: user.email }
@@ -118,23 +121,7 @@ authRoutes.post('/login', loginLimiter, async(req, res) => {
 
     const id = user.rows[0].id;
 
-    // Régénère l'identifiant de session : un identifiant obtenu avant la connexion
-    // ne doit pas rester valide après, sinon un attaquant qui l'a fait adopter à sa
-    // victime se retrouve dans son compte (fixation de session).
-    // Doit impérativement précéder l'affectation ci-dessous, que regenerate effacerait.
-    await new Promise<void>((resolve, reject) => {
-        req.session.regenerate((err) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve();
-            }
-        });
-    });
-
-    // Définit le userId de la session utilisateur
-    // ce qui déclenche la création de la session via le middleware 'express-session'
-    req.session.userId = id;
+    await createSession(req, id);
 
     // Email et mot de passe sont corrects
     return res.status(200).json({
