@@ -1,4 +1,4 @@
-import { rateLimit } from "express-rate-limit";
+import { rateLimit } from 'express-rate-limit';
 
 const MSG_MAX_ATTEMPTS_REACHED = "Trop de tentatives de connexion, réessayez plus tard";
 

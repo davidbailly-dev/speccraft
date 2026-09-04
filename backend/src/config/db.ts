@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import { Pool } from 'pg';
 
 // Configure la connexion à la DB
 export const pool = new Pool({
