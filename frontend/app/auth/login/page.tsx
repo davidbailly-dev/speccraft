@@ -57,9 +57,9 @@ export default function LoginPage() {
             </form>
             { showMessageBox &&
                 <MessageBox
-                    className="mt-2"
+                    className="mt-2 whitespace-pre-line"
                     type={state.success ? 'success' : 'error'}
-                    message={state.success ? '' : state.errors.join(' ')}
+                    message={state.success ? '' : state.errors.join('\n')}
                 />
             }
         </div>
