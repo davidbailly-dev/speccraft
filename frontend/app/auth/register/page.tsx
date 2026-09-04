@@ -19,10 +19,7 @@ export default function RegisterPage() {
                     name="password"
                     placeholder="Mot de passe"
                 />
-                <Button
-                    type="submit"
-                    label="Créer mon compte"
-                />
+                <Button type="submit">Créer mon compte</Button>
             </form>
         </div>
     );
