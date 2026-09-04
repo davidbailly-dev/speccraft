@@ -37,3 +37,16 @@ export interface LoginSuccessBody {
 export type LoginResult =
     | { success: true, user: User }
     | { success: false, reason: null | 'invalid_credentials' | 'rate_limited' | 'server_error' , errors: string[] };
+
+export interface RegisterInput {
+    email: string,
+    password: string,
+}
+
+export interface RegisterSuccessBody {
+    user: User,
+}
+
+export type RegisterResult =
+    | { success: true, user: User }
+    | { success: false, reason: null | 'invalid_input' | 'email_taken' | 'server_error', errors: string[] };
