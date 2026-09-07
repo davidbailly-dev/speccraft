@@ -39,7 +39,7 @@ export default function LoginPage() {
 
     useEffect(() => {
         if (state.success) {
-            router.push('/'); // TODO: ajuster la destination post-login
+            router.push('/dashboard');
         }
     }, [state, router]);
 
