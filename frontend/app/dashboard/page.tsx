@@ -9,6 +9,6 @@ export default async function DashboardPage() {
     }
 
     return (
-        <h1>Page d'accueil de /dashboard</h1>
+        <h1>{"Page d'accueil de /dashboard"}</h1>
     );
 }
