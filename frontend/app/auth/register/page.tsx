@@ -39,7 +39,7 @@ export default function RegisterPage() {
 
     useEffect(() => {
         if (state.success) {
-            router.push('/');  // TODO: ajuster la destination post-register
+            router.push('/dashboard');
         }
     }, [state, router]);
 

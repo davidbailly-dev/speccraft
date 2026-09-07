@@ -5,7 +5,8 @@
 export interface ApiFetchInput {
     endpoint: string,
     method: string,
-    body: string,
+    headers?: HeadersInit,
+    body?: string,
 }
 
 export interface ApiErrorBody {

@@ -3,11 +3,15 @@ import type { ApiFetchInput } from "./types";
 const url = process.env.NEXT_PUBLIC_BACKEND_HOST + ':' + process.env.NEXT_PUBLIC_BACKEND_PORT;
 
 export async function apiFetch(request: ApiFetchInput) {
+    const initialHeaders = { 'Content-Type': 'application/json' };
+    const requestHeaders = request.headers ?? {};
+    const mergedHeaders = {...initialHeaders, ...requestHeaders};
+
     const res = await fetch(url + request.endpoint, {
         method: request.method,
-        body: request.body,
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: mergedHeaders,
+        body: request.body,
     });
 
     return res;
