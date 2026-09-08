@@ -72,6 +72,15 @@ export async function register(registerInputs: RegisterInput): Promise<RegisterR
     return { success: true, user: data.user };
 }
 
-export async function logout() {
-    // A coder plus tard
+export async function logout(): Promise<{success: boolean}> {
+    const res = await apiFetch({
+        endpoint: '/auth/logout',
+        method: 'POST',
+    });
+
+    if (!res.ok) {
+        return { success: false };
+    }
+
+    return { success: true };
 }
