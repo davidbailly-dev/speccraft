@@ -1,23 +1,28 @@
 import Navigation from "@/components/nav/Navigation";
+import LogoutButton from "@/components/ui/LogoutButton";
 
 const navItems = [
     {
-        key: 1,
-        label: 'Créer un nouveau cahier des charges'
+        label: 'Lien test 1'
     },
     {
-        key: 2,
-        label: 'Se déconnecter'
+        label: 'Lien test 2'
+    },
+    {
+        label: 'Lien test 3'
     },
 ];
 
 export default function DashboardLayout({ children }: LayoutProps<"/dashboard">) {
     return (
-        <div className="grid grid-cols-2 p-4">
-            <Navigation
-                items={navItems}
-            />
-            <span>{children}</span>
-        </div>
+        <main className="grid grid-cols-2 p-4">
+            <nav>
+                <Navigation
+                    items={navItems}
+                />
+                <LogoutButton />
+            </nav>
+            <div>{children}</div>
+        </main>
     );
 }

@@ -9,13 +9,13 @@ export default function Navigation({
     items = []
 }: NavigationProps) {
     return (
-        <nav className='flex flex-col gap-4'>
-            {items.map((item) => (
+        <div className='flex flex-col gap-4'>
+            {items.map((item, key) => (
                 <NavItem
-                    key={item.key}
+                    key={key}
                     label={item.label}
                 />
             ))}
-        </nav>
+        </div>
     );
 }

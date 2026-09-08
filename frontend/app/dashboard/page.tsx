@@ -1,4 +1,3 @@
-import Button from "@/components/ui/Button";
 import { getCurrentUser } from "@/libs/api/user";
 import { redirect } from "next/navigation";
 
@@ -10,10 +9,6 @@ export default async function DashboardPage() {
     }
 
     return (
-        <Button
-            type="button"
-        >
-            Se déconnecter
-        </Button>
+        <h1>Accueil dashboard</h1>
     );
 }

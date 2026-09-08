@@ -1,10 +1,9 @@
 export interface NavItemProps {
-    key: number,
     label: string,
 };
 
 export default function NavItem({
-    label = 'NonDéfini'
+    label = 'NonDéfini',
 }: NavItemProps) {
     return (
         <a
