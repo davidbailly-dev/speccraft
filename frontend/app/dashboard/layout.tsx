@@ -15,14 +15,16 @@ const navItems = [
 
 export default function DashboardLayout({ children }: LayoutProps<"/dashboard">) {
     return (
-        <main className="grid grid-cols-2 p-4">
-            <nav>
-                <Navigation
-                    items={navItems}
-                />
-                <LogoutButton />
-            </nav>
-            <div>{children}</div>
+        <main className="flex gap-4 h-full">
+            <aside className="flex flex-col w-1/4 h-full bg-stone-800">
+                <nav>
+                    <Navigation
+                        items={navItems}
+                    />
+                </nav>
+                <LogoutButton className="mt-auto" />
+            </aside>
+            <div className="h-full grow p-4 bg-stone-500">{children}</div>
         </main>
     );
 }
