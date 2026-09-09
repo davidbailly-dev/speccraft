@@ -7,7 +7,7 @@ export default function NavItem({
 }: NavItemProps) {
     return (
         <a
-            className='bg-blue-700 text-white p-4 rounded-lg'
+            className='bg-blue-800 hover:bg-blue-600 text-white p-4 rounded-lg'
             href="#">
             {label}
         </a>
