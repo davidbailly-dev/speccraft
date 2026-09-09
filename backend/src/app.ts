@@ -43,8 +43,16 @@ app.get('/health', async(req, res) => {
 app.use('/auth', authRoutes);
 
 const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
-    console.error(err);
-    res.status(500).json({ errors: ['Une erreur interne est survenue'] });
+    const errorStatus = err.status ?? err.statusCode ?? null;
+    const isClientError = Number.isInteger(errorStatus) && errorStatus >= 400 && errorStatus < 500;
+    
+    if (isClientError) {       
+        console.log('Client error:', err);
+        res.status(errorStatus).json({ errors: ['Une erreur de requête est survenue'] });
+    } else {
+        console.error('Server error:', err);
+        res.status(500).json({ errors: ['Une erreur interne est survenue'] });
+    }
 };
 
 app.use(errorHandler);
