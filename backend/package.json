@@ -37,7 +37,6 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^26.4.0",
     "@types/pg": "^8.23.1",
-    "@types/typescript": "^0.4.29",
     "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
     "jest": "^30.5.0",
