@@ -395,8 +395,8 @@ describe('POST /auth/login', function() {
         const password = "abcdeF1!";
         const agent = request.agent(app);
 
-        let cookieBefore: String | null = null;
-        let cookieAfter: String | null = null;
+        let cookieBefore: string | null = null;
+        let cookieAfter: string | null = null;
 
         // Met à zéro le rate limit éventuellement incrémenté
         // par d'autres tests dans ce fichier
