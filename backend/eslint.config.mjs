@@ -10,6 +10,11 @@ export default tseslint.config(
     ignores: ['dist/', 'node_modules/'],
   },
   {
+    rules: {
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    }
+  },
+  {
     files: ['*.config.js'],
     languageOptions: {
       sourceType: 'commonjs',
@@ -20,6 +25,17 @@ export default tseslint.config(
     },
     rules: {
       '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
+  {
+    files: ['migrations/**/*.js'],
+    languageOptions: {
+      sourceType: 'commonjs',
+      globals: {
+        require: 'readonly',
+        module: 'writable',
+        exports: 'writable',
+      },
     },
   },
 );

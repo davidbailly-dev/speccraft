@@ -74,6 +74,7 @@ Le but est d'apporter plusieurs avantages à un cahier des charges :
     - Gestion de la session via un cookie `httpOnly`, `Secure` et `SameSite`
     - Validation des données d'entrée de l'API et limitation du nombre de tentatives de connexion (rate limiting) contre le bruteforce
     - CORS restreint au domaine du frontend, avec support des credentials (cookies)
+    - Mot de passe : au moins 8 caractères, avec au moins une majuscule, une minuscule, un chiffre et un caractère spécial
 - Gestion des secrets : variables d'environnement (`.env`), jamais commitées dans le dépôt
 - Observabilité : logging applicatif en production, consultable via les logs Render
 
@@ -84,7 +85,8 @@ Le but est d'apporter plusieurs avantages à un cahier des charges :
 - Base de données : PostgreSQL
 - Versionning : git et GitHub
 - CI/CD : GitHub Actions
-- Hébergement déploiement : `Render`
+- Hébergement de l'application : `Render`
+- Hébergement de la base de données : `Neon`
 
 ## 6. Parcours utilisateur
 
@@ -111,7 +113,7 @@ Le but est d'apporter plusieurs avantages à un cahier des charges :
 
 - Runtime : NodeJS
 - Framework : Express
-- Base de données : PostgreSQL (en ligne)
+- Base de données : PostgreSQL (hébergée sur `Neon`)
 - Documentation API : swagger-jsdoc + swagger-ui-express
 
 ### Frontend
@@ -154,13 +156,22 @@ Suivi assuré via GitHub Issues / Project :
         - pipeline CI/CD (lint, build, tests)
         - déploiement initial sur Render
         - rédaction d'une première version du README
-    1. Authentification
-    2. CRUD cahier des charges
-    3. Listing + recherche par mots clés
-    4. Export MarkDown
-    5. Brouillons & publication (versionning)
+    1. Authentification : permettre à un utilisateur de créer un compte et de se connecter de façon sécurisée
+        - migration de la table `users` (node-pg-migrate)
+        - configuration de la session (express-session + connect-pg-simple)
+        - inscription, connexion, déconnexion (API)
+        - middleware d'authentification + utilisateur courant
+        - page Login (frontend)
+        - protection des routes selon l'état d'authentification
+        - dashboard minimal protégé (placeholder)
+    2. CRUD cahier des charges : permettre de créer, consulter, modifier et supprimer ses cahiers des charges
+    3. Listing + recherche par mots clés : permettre de retrouver rapidement un cahier des charges dans sa liste
+    4. Export MarkDown : permettre d'exporter un cahier des charges au format MarkDown
+    5. Brouillons & publication (versionning) : introduire la notion de brouillon et de publication versionnée d'un cahier des charges
 - Une branche `feature/*` (GitFlow) par jalon, liée aux issues correspondantes
 - Chaque jalon fonctionnel se découpe en sous-tâches backend puis frontend (via les issues GitHub)
+- Chaque issue GitHub suit une structure en 2 sections : `Tâches` (liste à cocher) et `Critères d'acceptation`
+- Le découpage en issues d'un jalon se fait au fur et à mesure du développement, juste avant de l'attaquer, et non à l'avance pour tous les jalons : les choix techniques faits sur un jalon peuvent influencer le découpage des jalons suivants, et une planification trop détaillée en amont risquerait de devenir obsolète
 
 ## 10. Annexes
 

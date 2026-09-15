@@ -12,24 +12,42 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "lint": "eslint .",
-    "test": "jest --passWithNoTests"
+    "test": "jest",
+    "migrate:create": "node node_modules/.bin/node-pg-migrate create",
+    "migrate:up": "node --env-file=.env node_modules/.bin/node-pg-migrate up",
+    "migrate:down": "node --env-file=.env node_modules/.bin/node-pg-migrate down",
+    "migrate-test:up": "node --env-file=.env.test node_modules/.bin/node-pg-migrate up -d TEST_DATABASE_URL_UNPOOLED",
+    "migrate-test:down": "node --env-file=.env.test node_modules/.bin/node-pg-migrate down -d TEST_DATABASE_URL_UNPOOLED",
+    "migrate-test:up:ci": "node node_modules/.bin/node-pg-migrate up -d TEST_DATABASE_URL_UNPOOLED"
   },
   "type": "commonjs",
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "connect-pg-simple": "^10.0.0",
+    "cors": "^2.8.6",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
+    "express-session": "^1.19.0",
     "pg": "^8.23.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/bcrypt": "^6.0.0",
+    "@types/connect-pg-simple": "^7.0.3",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/express-session": "^1.19.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^26.4.0",
     "@types/pg": "^8.23.1",
-    "@types/typescript": "^0.4.29",
+    "@types/supertest": "^7.2.1",
+    "dotenv": "^17.4.2",
     "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
     "jest": "^30.5.0",
+    "node-pg-migrate": "^9.0.0",
     "prettier": "^3.9.6",
+    "supertest": "^7.2.2",
     "ts-jest": "^29.4.12",
     "tsx": "^4.23.13",
     "typescript": "~6.0.3",
@@ -38,6 +56,7 @@
   "allowScripts": {
     "esbuild@0.28.2": true,
     "@parcel/watcher@2.6.0": true,
-    "unrs-resolver@1.12.2": true
+    "unrs-resolver@1.12.2": true,
+    "bcrypt@6.0.0": true
   }
 }
