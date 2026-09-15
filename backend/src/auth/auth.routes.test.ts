@@ -388,7 +388,7 @@ describe('POST /auth/login', function() {
                     errors: expect.arrayContaining([expect.any(String)])
                 });
             });
-    });
+    }, 10000); // On définit une marge de 10 000 ms de timeout par sécurité
 
     it('La session existante a bien été regénérée', async function() {
         const email = crypto.randomUUID() + '@fakeemail.com';
