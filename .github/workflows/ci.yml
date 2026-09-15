@@ -20,7 +20,22 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run build
+      - run: npm run migrate-test:up:ci
       - run: npm run test
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: tempadmin
+          POSTGRES_PASSWORD: temppassword
+          POSTGRES_DB: speccraft_test
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      TEST_DATABASE_URL: postgresql://tempadmin:temppassword@localhost:5432/speccraft_test
+      TEST_DATABASE_URL_UNPOOLED: postgresql://tempadmin:temppassword@localhost:5432/speccraft_test
+      SESSION_SECRET: tempsecret
 
   frontend:
     runs-on: ubuntu-latest
