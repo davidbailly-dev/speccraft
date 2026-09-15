@@ -10,7 +10,7 @@ describe('GET /health', function() {
             .expect('Content-Type', /json/)
             .then(response => {
                 expect(response.body.status).toEqual('ok');
-            })
+            });
     });
 });
 

@@ -13,7 +13,7 @@ const DUMMY_HASH = '$2b$12$OGdYeI1idJH9WUFQ0VnW1eF4v3o9ladk3/uVl1BxJ0X84bcDJo73C
 const BCRYPT_COST = 12;
 const MSG_EMAIL_ALREADY_USED = 'Cette adresse email est déjà utilisée';
 const MSG_EMAIL_AND_PASSWORD_REQUIRED = 'Les champs email et password sont requis';
-const MSG_WRONG_EMAIL_OR_PASSWORD = 'Email ou mot de passe invalide';
+export const MSG_WRONG_EMAIL_OR_PASSWORD = 'Email ou mot de passe invalide';
 
 export const authRoutes = Router();
 
