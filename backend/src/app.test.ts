@@ -6,8 +6,8 @@ describe('GET /health', function() {
     it('responds with json', function() {
         return request(app)
             .get('/health')
-            .expect('Content-Type', /json/)
             .expect(200)
+            .expect('Content-Type', /json/)
             .then(response => {
                 expect(response.body.status).toEqual('ok');
             })
@@ -15,6 +15,7 @@ describe('GET /health', function() {
 });
 
 // Coupe les connections en pooling avec les DB Neon
+// pour éviter une erreur console Jest à la fin des tests
 afterAll(async () => {
     await pool.end();
 });
