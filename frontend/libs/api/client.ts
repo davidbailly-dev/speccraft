@@ -1,6 +1,6 @@
 import type { ApiFetchInput } from "./types";
 
-const url = process.env.NEXT_PUBLIC_BACKEND_HOST + ':' + process.env.NEXT_PUBLIC_BACKEND_PORT;
+const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function apiFetch(request: ApiFetchInput) {
     const initialHeaders = { 'Content-Type': 'application/json' };
