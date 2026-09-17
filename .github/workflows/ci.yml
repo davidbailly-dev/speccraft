@@ -53,3 +53,5 @@ jobs:
       - run: npm run lint
       - run: npm run build
       - run: npm run test
+    env:
+      BACKEND_URL: http://fakesubdomain.fakedomain.com
