@@ -24,7 +24,7 @@ Le but est d'apporter plusieurs avantages à un cahier des charges :
 
 - L'application est utilisée par une équipe de développeurs et non développeurs
 - La rédaction au format texte suffit pour un cahier des charges
-- Le template est fixe et défini une fois
+- Le template est fixe et défini une fois : il n'est pas personnalisable par l'utilisateur depuis l'application, mais peut évoluer entre deux versions de l'application (ajout de section), sous réserve de compatibilité avec les cahiers des charges déjà créés (identifiant de section stable)
 
 ### Inclus
 
@@ -34,7 +34,7 @@ Le but est d'apporter plusieurs avantages à un cahier des charges :
 ### N'inclus pas
 
 - Aucune image ou autre document n'est intégrable. Le document doit rester simple, léger, pragmatique et concis.
-- Le modèle de structure d'un cahier des charges n'est pas modifiable
+- Le modèle de structure d'un cahier des charges n'est pas modifiable par l'utilisateur depuis l'application (pas de fonctionnalité de personnalisation)
 
 ## 3. Besoins fonctionnels
 
