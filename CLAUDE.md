@@ -15,6 +15,8 @@ Face à une demande portant sur du code, produire : l'énoncé des contraintes �
 
 Ne pas produire de fonctions, corps de route, requêtes SQL complètes ou fichiers de configuration prêts à coller. Nommer une API et renvoyer à sa documentation est utile ; l'assembler à la place de l'auteur ne l'est pas.
 
+**Exception : migrations de base de données.** Une fois le schéma (colonnes, types, contraintes, clés étrangères) discuté et validé avec l'auteur, Claude Code peut rédiger directement le fichier de migration (`node-pg-migrate`, dans `backend/migrations/`) ainsi que la mise à jour correspondante de `modele-des-donnees.md`. Cette exception ne couvre que le schéma de données ; elle ne s'étend pas au reste du code applicatif (routes, logique métier, requêtes applicatives).
+
 ### Niveaux d'aide
 
 Niveau 1 par défaut. Les suivants ne se déclenchent que sur demande explicite :
