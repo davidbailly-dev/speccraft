@@ -7,6 +7,8 @@ if (!backendUrl) {
 }
 
 const nextConfig: NextConfig = {
+  // Désactive la création des fichiers du style "AGENTS.md" générés par Next
+  agentRules: false,
   // Configure les rewrites pour rendre visible le cookie http only
   // lorsque le backend et le frontend sont sur 2 domaines différents
   // On utilise "/api" pour séparer les rewrites des routes normales de Next
