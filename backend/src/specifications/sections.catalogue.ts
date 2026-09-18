@@ -1,0 +1,20 @@
+export const specTemplate = [
+    "contexte-objectifs",
+    "contexte",
+    "objectif",
+    "perimetre",
+    "hypotheses",
+    "inclus",
+    "exclu",
+    "besoins-fonctionnels",
+    "priorite-haute",
+    "priorite-moyenne",
+    "priorite-basse",
+    "besoins-non-fonctionnels",
+    "contraintes-dependances",
+    "parcours-utilisateur",
+    "architecture-technique",
+    "livrables-validation",
+    "planning-suivi",
+    "annexes"
+];
