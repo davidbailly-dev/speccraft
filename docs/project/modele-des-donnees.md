@@ -22,6 +22,21 @@ Schéma des entités et relations en base de données PostgreSQL. Mis à jour au
 | created_at | timestamp | not null, default now |
 | published_at | timestamp | nullable, renseigné à la publication |
 
+## sections
+
+Le catalogue des slugs valides (aligné sur `docs/project/template.md`) et leur validation à l'insertion vivent côté code, pas en base.
+
+| Colonne | Type | Contraintes |
+|---|---|---|
+| id | serial | clé primaire |
+| specification_id | integer | clé étrangère vers `specifications.id`, not null, `ON DELETE CASCADE` |
+| slug | varchar(100) | not null |
+| content | text | not null |
+| created_at | timestamp | not null, default now |
+| updated_at | timestamp | not null, default now, mis à jour automatiquement par trigger (`set_updated_at`) |
+
+Contrainte d'unicité composite sur (`specification_id`, `slug`).
+
 ## session
 
 Table technique gérée par `connect-pg-simple` (store de session Express).
