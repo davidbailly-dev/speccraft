@@ -34,14 +34,14 @@ export function NewSpecificationForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="flex items-center gap-2">
+        <form onSubmit={handleSubmit} className="flex flex-wrap items-center gap-2">
             <input
                 type="text"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
                 placeholder="Nom du cahier des charges"
                 autoFocus
-                className="flex-1 rounded-lg border border-border bg-surface px-4 py-2 text-sm outline-none focus:border-accent"
+                className="min-w-0 flex-1 rounded-lg border border-border bg-surface px-4 py-2 text-sm outline-none focus:border-accent"
             />
             <button
                 type="submit"

@@ -108,7 +108,7 @@ export function SpecificationDetail({ id }: { id: string }) {
 
     return (
         <div className="flex flex-col gap-8">
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <Link
                     href="/"
                     className="inline-flex w-fit items-center gap-1.5 text-sm text-muted hover:text-foreground"
@@ -116,7 +116,7 @@ export function SpecificationDetail({ id }: { id: string }) {
                     <ArrowLeft size={16} />
                     Retour à la liste
                 </Link>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                     {specification && <ExportMarkdownButton specification={specification} />}
                     {dirtySlugs.length > 0 && (
                         <button
