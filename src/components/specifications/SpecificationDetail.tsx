@@ -7,6 +7,8 @@ import { useSpecification } from '@/lib/queries/useSpecification';
 import { useSaveDraftSection } from '@/lib/queries/useSaveDraftSection';
 import { usePublishSpecification } from '@/lib/queries/usePublishSpecification';
 import { ExportMarkdownButton } from './ExportMarkdownButton';
+import { PageTitle } from '@/components/ui/PageTitle';
+import { Card } from '@/components/ui/Card';
 import { specificationCatalogue, type SectionCatalogueEntry } from '@/lib/mock-data/catalogue';
 import { formatDate } from '@/lib/format/date';
 import type { Section } from '@/lib/mock-data/schemas';
@@ -54,19 +56,21 @@ function SectionEditor({
 
     return (
         <div className={entry.level === 'subsection' ? 'pl-5' : ''}>
-            <div className="flex items-center gap-2">
-                <HeadingTag className={entry.level === 'section' ? 'text-lg font-semibold' : 'text-base font-medium'}>
-                    {entry.title}
-                </HeadingTag>
-                <SectionStatusBadge status={status} />
-            </div>
-            <textarea
-                value={value}
-                onChange={(event) => onChange(event.target.value)}
-                rows={entry.level === 'section' ? 4 : 3}
-                placeholder="Section vide."
-                className="mt-1 w-full resize-y rounded-lg border border-border bg-surface p-3 text-sm outline-none focus:border-accent"
-            />
+            <Card>
+                <div className="flex items-center gap-2">
+                    <HeadingTag className={entry.level === 'section' ? 'text-lg font-semibold' : 'text-base font-medium'}>
+                        {entry.title}
+                    </HeadingTag>
+                    <SectionStatusBadge status={status} />
+                </div>
+                <textarea
+                    value={value}
+                    onChange={(event) => onChange(event.target.value)}
+                    rows={entry.level === 'section' ? 4 : 3}
+                    placeholder="Section vide."
+                    className="w-full resize-y rounded-lg border border-border bg-transparent p-3 text-sm outline-none focus:border-accent"
+                />
+            </Card>
         </div>
     );
 }
@@ -123,7 +127,7 @@ export function SpecificationDetail({ id }: { id: string }) {
                             type="button"
                             onClick={handleSave}
                             disabled={isSaving || isPublishing}
-                            className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover disabled:opacity-50"
+                            className="cursor-pointer rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:border-accent/40 hover:bg-surface-hover disabled:cursor-default disabled:opacity-50"
                         >
                             {isSaving ? 'Enregistrement…' : `Enregistrer (${dirtySlugs.length})`}
                         </button>
@@ -133,7 +137,7 @@ export function SpecificationDetail({ id }: { id: string }) {
                             type="button"
                             onClick={handlePublish}
                             disabled={isSaving || isPublishing}
-                            className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+                            className="cursor-pointer rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent-hover disabled:cursor-default disabled:opacity-50"
                         >
                             {isPublishing ? 'Publication…' : 'Publier'}
                         </button>
@@ -147,7 +151,7 @@ export function SpecificationDetail({ id }: { id: string }) {
             {specification && (
                 <>
                     <header className="flex flex-col gap-1">
-                        <h1 className="text-2xl font-semibold">{specification.name}</h1>
+                        <PageTitle>{specification.name}</PageTitle>
                         <p className="text-sm text-muted">
                             v{specification.version} · créé le {formatDate(specification.createdAt)}
                             {specification.publishedAt &&

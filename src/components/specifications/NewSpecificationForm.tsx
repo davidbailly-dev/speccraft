@@ -26,7 +26,7 @@ export function NewSpecificationForm() {
             <button
                 type="button"
                 onClick={() => setIsOpen(true)}
-                className="self-start rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90"
+                className="cursor-pointer self-start rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent-hover"
             >
                 Nouveau cahier des charges
             </button>
@@ -46,14 +46,14 @@ export function NewSpecificationForm() {
             <button
                 type="submit"
                 disabled={isPending || !name.trim()}
-                className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+                className="cursor-pointer rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent-hover disabled:cursor-default disabled:opacity-50"
             >
                 {isPending ? 'Création…' : 'Créer'}
             </button>
             <button
                 type="button"
                 onClick={close}
-                className="rounded-lg border border-border px-4 py-2 text-sm text-muted hover:bg-surface-hover"
+                className="cursor-pointer rounded-lg border border-border px-4 py-2 text-sm text-muted transition-colors hover:bg-surface-hover"
             >
                 Annuler
             </button>
