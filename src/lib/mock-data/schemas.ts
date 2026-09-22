@@ -38,6 +38,11 @@ export const SpecificationDetailSchema = SpecificationSchema.extend({
 });
 export type SpecificationDetail = z.infer<typeof SpecificationDetailSchema>;
 
+export const CreateSpecificationInputSchema = z.object({
+    name: z.string().trim().min(1),
+});
+export type CreateSpecificationInput = z.infer<typeof CreateSpecificationInputSchema>;
+
 export const DatasetSchema = z.object({
     specifications: z.array(SpecificationSchema),
     sections: z.array(SectionSchema),
