@@ -2,7 +2,7 @@
 
 SpecCraft est un outil de rédaction et de maintenance de cahiers des charges structurés pour des projets de développement informatique.
 
-**Démo en ligne :** _à venir (déploiement Render en cours)_
+**Démo en ligne :** [speccraft-ww9f.onrender.com](https://speccraft-ww9f.onrender.com)
 
 L'application s'appuie sur des données mockées (aucun backend réel n'est nécessaire pour la faire tourner) mais l'architecture est pensée pour en accueillir un par la suite : schémas Zod comme source de vérité des types, Route Handlers Next.js jouant le rôle d'API, hooks TanStack Query côté client — remplacer le mock par un vrai backend ne demande de toucher qu'à la couche Route Handlers.
 
