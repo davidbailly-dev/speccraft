@@ -6,6 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useSpecification } from '@/lib/queries/useSpecification';
 import { useSaveDraftSection } from '@/lib/queries/useSaveDraftSection';
 import { usePublishSpecification } from '@/lib/queries/usePublishSpecification';
+import { ExportMarkdownButton } from './ExportMarkdownButton';
 import { specificationCatalogue, type SectionCatalogueEntry } from '@/lib/mock-data/catalogue';
 import { formatDate } from '@/lib/format/date';
 import type { Section } from '@/lib/mock-data/schemas';
@@ -116,6 +117,7 @@ export function SpecificationDetail({ id }: { id: string }) {
                     Retour à la liste
                 </Link>
                 <div className="flex items-center gap-2">
+                    {specification && <ExportMarkdownButton specification={specification} />}
                     {dirtySlugs.length > 0 && (
                         <button
                             type="button"
