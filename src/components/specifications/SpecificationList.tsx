@@ -45,14 +45,14 @@ function DeleteSpecificationButton({ specification }: { specification: Specifica
                     type="button"
                     onClick={() => mutate(specification.id)}
                     disabled={isPending}
-                    className="font-medium text-warning hover:underline disabled:opacity-50"
+                    className="cursor-pointer font-medium text-warning hover:underline disabled:cursor-default disabled:opacity-50"
                 >
                     {isPending ? 'Suppression…' : 'Confirmer'}
                 </button>
                 <button
                     type="button"
                     onClick={() => setIsConfirming(false)}
-                    className="text-muted hover:underline"
+                    className="cursor-pointer text-muted hover:underline"
                 >
                     Annuler
                 </button>
@@ -65,7 +65,7 @@ function DeleteSpecificationButton({ specification }: { specification: Specifica
             type="button"
             onClick={() => setIsConfirming(true)}
             aria-label={`Supprimer ${specification.name}`}
-            className="rounded-lg p-2 text-muted transition-colors hover:bg-surface-hover hover:text-warning"
+            className="cursor-pointer rounded-lg p-2 text-muted transition-colors hover:bg-surface-hover hover:text-warning"
         >
             <Trash2 size={16} />
         </button>
@@ -103,7 +103,7 @@ export function SpecificationList() {
                     {specifications.map((specification) => (
                         <li
                             key={specification.id}
-                            className="flex items-center gap-2 rounded-xl border border-border bg-surface p-2 transition-colors hover:bg-surface-hover"
+                            className="flex items-center gap-2 rounded-2xl border border-border bg-surface p-2 transition-colors hover:border-accent/40 hover:bg-surface-hover"
                         >
                             <Link
                                 href={`/specifications/${specification.id}`}

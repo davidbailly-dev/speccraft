@@ -22,7 +22,7 @@ export function ExportMarkdownButton({ specification }: { specification: Specifi
         <button
             type="button"
             onClick={handleExport}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover"
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:border-accent/40 hover:bg-surface-hover"
         >
             <Download size={16} />
             Exporter en Markdown
