@@ -1,6 +1,10 @@
 import { NextRequest } from 'next/server';
-import { getDataset } from '@/lib/mock-data/store';
-import { SpecificationSummaryListSchema } from '@/lib/mock-data/schemas';
+import { createSpecification, getDataset } from '@/lib/mock-data/store';
+import {
+    CreateSpecificationInputSchema,
+    SpecificationDetailSchema,
+    SpecificationSummaryListSchema,
+} from '@/lib/mock-data/schemas';
 
 export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
@@ -22,4 +26,16 @@ export async function GET(request: NextRequest) {
         .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
     return Response.json(SpecificationSummaryListSchema.parse(summaries));
+}
+
+export async function POST(request: NextRequest) {
+    const body = await request.json().catch(() => null);
+    const parsed = CreateSpecificationInputSchema.safeParse(body);
+
+    if (!parsed.success) {
+        return Response.json({ error: 'Nom de cahier des charges invalide' }, { status: 400 });
+    }
+
+    const specification = createSpecification(parsed.data.name);
+    return Response.json(SpecificationDetailSchema.parse(specification), { status: 201 });
 }
