@@ -12,7 +12,7 @@ import type { SpecificationSummary } from '@/lib/mock-data/schemas';
 function SpecificationStatusBadge({ specification }: { specification: SpecificationSummary }) {
     if (specification.hasPendingDrafts) {
         return (
-            <span className="rounded-full bg-warning-surface px-2.5 py-0.5 text-xs font-medium text-warning">
+            <span className="shrink-0 rounded-full bg-warning-surface px-2.5 py-0.5 text-xs font-medium text-warning">
                 Brouillon en attente
             </span>
         );
@@ -20,14 +20,14 @@ function SpecificationStatusBadge({ specification }: { specification: Specificat
 
     if (!specification.publishedAt) {
         return (
-            <span className="rounded-full bg-surface-hover px-2.5 py-0.5 text-xs font-medium text-muted">
+            <span className="shrink-0 rounded-full bg-surface-hover px-2.5 py-0.5 text-xs font-medium text-muted">
                 Jamais publié
             </span>
         );
     }
 
     return (
-        <span className="rounded-full bg-success-surface px-2.5 py-0.5 text-xs font-medium text-success">
+        <span className="shrink-0 rounded-full bg-success-surface px-2.5 py-0.5 text-xs font-medium text-success">
             Publié
         </span>
     );
@@ -78,7 +78,7 @@ export function SpecificationList() {
 
     return (
         <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="flex flex-col flex-wrap gap-3 sm:flex-row sm:items-center">
                 <input
                     type="search"
                     value={search}
@@ -107,11 +107,11 @@ export function SpecificationList() {
                         >
                             <Link
                                 href={`/specifications/${specification.id}`}
-                                className="flex flex-1 items-center justify-between gap-4 p-2"
+                                className="flex min-w-0 flex-1 items-center justify-between gap-4 p-2"
                             >
-                                <div className="flex flex-col gap-1">
-                                    <span className="font-medium">{specification.name}</span>
-                                    <span className="text-xs text-muted">
+                                <div className="flex min-w-0 flex-col gap-1">
+                                    <span className="truncate font-medium">{specification.name}</span>
+                                    <span className="truncate text-xs text-muted">
                                         v{specification.version} · créé le {formatDate(specification.createdAt)}
                                         {specification.publishedAt &&
                                             ` · publié le ${formatDate(specification.publishedAt)}`}
