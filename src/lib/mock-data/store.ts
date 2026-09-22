@@ -77,3 +77,30 @@ export function saveDraftSection(specificationId: string, slug: string, content:
     section.updatedAt = new Date().toISOString();
     return section;
 }
+
+/**
+ * Valide tous les brouillons en attente (le contenu publié devient le contenu du
+ * brouillon, le brouillon est levé) et incrémente la version du cahier des charges.
+ * Retourne `null` si l'id est inconnu.
+ */
+export function publishSpecification(id: string): SpecificationDetail | null {
+    const data = getDataset();
+    const specification = data.specifications.find((item) => item.id === id);
+    if (!specification) return null;
+
+    const now = new Date().toISOString();
+    const sections = data.sections.filter((section) => section.specificationId === id);
+
+    for (const section of sections) {
+        if (section.draftContent !== null) {
+            section.publishedContent = section.draftContent;
+            section.draftContent = null;
+            section.updatedAt = now;
+        }
+    }
+
+    specification.version += 1;
+    specification.publishedAt = now;
+
+    return { ...specification, sections };
+}
