@@ -1,18 +1,23 @@
 @import "tailwindcss";
 
+/*
+ * Thème sombre fixe (pas de light mode), inspiré de la palette de salespulse :
+ * fond navy dégradé, accent violet, surfaces/bordures dédiées pour les cartes.
+ */
 :root {
-  --background: #fafafa;
-  --foreground: #18181b;
-  --surface: #ffffff;
-  --surface-hover: #f4f4f5;
-  --border: #e4e4e7;
-  --accent: #4f46e5;
+  --background: #0a0e1a;
+  --foreground: #f9fafb;
+  --surface: #111827;
+  --surface-hover: #1a2234;
+  --border: #1f2937;
+  --accent: #8b5cf6;
+  --accent-hover: #7c3aed;
   --accent-foreground: #ffffff;
-  --warning: #b45309;
-  --warning-surface: #fef3c7;
-  --success: #047857;
-  --success-surface: #d1fae5;
-  --muted: #71717a;
+  --warning: #fbbf24;
+  --warning-surface: rgba(251, 191, 36, 0.12);
+  --success: #34d399;
+  --success-surface: rgba(52, 211, 153, 0.12);
+  --muted: #9ca3af;
 }
 
 @theme inline {
@@ -22,6 +27,7 @@
   --color-surface-hover: var(--surface-hover);
   --color-border: var(--border);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --color-accent-foreground: var(--accent-foreground);
   --color-warning: var(--warning);
   --color-warning-surface: var(--warning-surface);
@@ -32,25 +38,8 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #f4f4f5;
-    --surface: #18181b;
-    --surface-hover: #27272a;
-    --border: #3f3f46;
-    --accent: #818cf8;
-    --accent-foreground: #0a0a0a;
-    --warning: #fbbf24;
-    --warning-surface: rgba(251, 191, 36, 0.12);
-    --success: #34d399;
-    --success-surface: rgba(52, 211, 153, 0.12);
-    --muted: #a1a1aa;
-  }
-}
-
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
