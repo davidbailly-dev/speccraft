@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { useSpecification } from '@/lib/queries/useSpecification';
 import { useSaveDraftSection } from '@/lib/queries/useSaveDraftSection';
+import { usePublishSpecification } from '@/lib/queries/usePublishSpecification';
 import { specificationCatalogue, type SectionCatalogueEntry } from '@/lib/mock-data/catalogue';
 import { formatDate } from '@/lib/format/date';
 import type { Section } from '@/lib/mock-data/schemas';
@@ -73,6 +74,7 @@ export function SpecificationDetail({ id }: { id: string }) {
     const { data: specification, isLoading, isError } = useSpecification(id);
     const [edits, setEdits] = useState<Record<string, string>>({});
     const { mutateAsync: saveDraftSection, isPending: isSaving } = useSaveDraftSection();
+    const { mutateAsync: publishSpecification, isPending: isPublishing } = usePublishSpecification();
 
     const sectionsBySlug = new Map(specification?.sections.map((section) => [section.slug, section]));
 
@@ -82,6 +84,10 @@ export function SpecificationDetail({ id }: { id: string }) {
               .filter((slug) => edits[slug] !== undefined && edits[slug] !== baselineContent(sectionsBySlug.get(slug)))
         : [];
 
+    const hasPendingDraftsOnServer =
+        specification?.sections.some((section) => section.draftContent !== null) ?? false;
+    const canPublish = hasPendingDraftsOnServer || dirtySlugs.length > 0;
+
     async function handleSave() {
         if (!specification || dirtySlugs.length === 0) return;
         await Promise.all(
@@ -89,6 +95,14 @@ export function SpecificationDetail({ id }: { id: string }) {
                 saveDraftSection({ specificationId: specification.id, slug, content: edits[slug] }),
             ),
         );
+    }
+
+    async function handlePublish() {
+        if (!specification || !canPublish) return;
+        // Publier valide les brouillons déjà enregistrés : toute modification locale
+        // pas encore enregistrée doit d'abord passer par Enregistrer.
+        if (dirtySlugs.length > 0) await handleSave();
+        await publishSpecification(specification.id);
     }
 
     return (
@@ -101,16 +115,28 @@ export function SpecificationDetail({ id }: { id: string }) {
                     <ArrowLeft size={16} />
                     Retour à la liste
                 </Link>
-                {dirtySlugs.length > 0 && (
-                    <button
-                        type="button"
-                        onClick={handleSave}
-                        disabled={isSaving}
-                        className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
-                    >
-                        {isSaving ? 'Enregistrement…' : `Enregistrer (${dirtySlugs.length})`}
-                    </button>
-                )}
+                <div className="flex items-center gap-2">
+                    {dirtySlugs.length > 0 && (
+                        <button
+                            type="button"
+                            onClick={handleSave}
+                            disabled={isSaving || isPublishing}
+                            className="rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-surface-hover disabled:opacity-50"
+                        >
+                            {isSaving ? 'Enregistrement…' : `Enregistrer (${dirtySlugs.length})`}
+                        </button>
+                    )}
+                    {canPublish && (
+                        <button
+                            type="button"
+                            onClick={handlePublish}
+                            disabled={isSaving || isPublishing}
+                            className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+                        >
+                            {isPublishing ? 'Publication…' : 'Publier'}
+                        </button>
+                    )}
+                </div>
             </div>
 
             {isLoading && <p className="text-sm text-muted">Chargement…</p>}
