@@ -60,3 +60,20 @@ export function deleteSpecification(id: string): boolean {
     data.sections = data.sections.filter((section) => section.specificationId !== id);
     return true;
 }
+
+/**
+ * Enregistre le contenu édité d'une section comme brouillon (`draftContent`),
+ * sans toucher au contenu publié : reste un brouillon jusqu'à publication.
+ * Retourne `null` si le cahier des charges ou le slug est inconnu.
+ */
+export function saveDraftSection(specificationId: string, slug: string, content: string): Section | null {
+    const data = getDataset();
+    const section = data.sections.find(
+        (item) => item.specificationId === specificationId && item.slug === slug,
+    );
+    if (!section) return null;
+
+    section.draftContent = content;
+    section.updatedAt = new Date().toISOString();
+    return section;
+}
