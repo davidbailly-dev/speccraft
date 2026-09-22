@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: speccraft
+    runtime: node
+    plan: free
+    branch: main
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    autoDeployTrigger: commit
