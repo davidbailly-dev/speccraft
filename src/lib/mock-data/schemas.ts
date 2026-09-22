@@ -43,6 +43,11 @@ export const CreateSpecificationInputSchema = z.object({
 });
 export type CreateSpecificationInput = z.infer<typeof CreateSpecificationInputSchema>;
 
+export const SaveDraftSectionInputSchema = z.object({
+    content: z.string(),
+});
+export type SaveDraftSectionInput = z.infer<typeof SaveDraftSectionInputSchema>;
+
 export const DatasetSchema = z.object({
     specifications: z.array(SpecificationSchema),
     sections: z.array(SectionSchema),
