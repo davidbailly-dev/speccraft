@@ -8,3 +8,6 @@ services:
     startCommand: npm start
     healthCheckPath: /
     autoDeployTrigger: commit
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
