@@ -1,3 +1,4 @@
+import { specificationCatalogue } from '@/lib/mock-data/catalogue';
 import type { GenerateSectionDraftInput } from './schemas';
 
 // `gemini-3.1-flash-lite` : variante « lite » au quota gratuit journalier nettement plus
@@ -17,10 +18,25 @@ export class GeminiRequestError extends Error {
     }
 }
 
-function buildPrompt({ specificationName, sectionTitle, existingContent, instructions }: GenerateSectionDraftInput): string {
+function buildPrompt({
+    specificationName,
+    sectionSlug,
+    sectionTitle,
+    existingContent,
+    instructions,
+}: GenerateSectionDraftInput): string {
+    // Format décidé par section dans le catalogue (src/lib/mock-data/catalogue.ts), pas laissé
+    // au choix du modèle : résultat cohérent d'une génération à l'autre pour une même section.
+    const contentFormat = specificationCatalogue.find((entry) => entry.slug === sectionSlug)?.contentFormat ?? 'paragraph';
+
+    const formatInstruction =
+        contentFormat === 'list'
+            ? 'Réponds uniquement avec une liste à puces Markdown (une ligne par item, commençant par "- "), en français, de façon claire et professionnelle, sans titre.'
+            : "Réponds uniquement avec le texte de la section, en français, de façon claire et professionnelle, sans titre ni formatage Markdown.";
+
     const parts = [
         `Tu rédiges le contenu de la section "${sectionTitle}" d'un cahier des charges structuré nommé "${specificationName}".`,
-        "Réponds uniquement avec le texte de la section, en français, de façon claire et professionnelle, sans titre ni formatage Markdown.",
+        formatInstruction,
     ];
 
     if (existingContent.trim()) {

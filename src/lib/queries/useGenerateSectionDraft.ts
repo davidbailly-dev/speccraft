@@ -3,6 +3,7 @@ import { GenerateSectionDraftOutputSchema } from '@/lib/ai/schemas';
 
 type GenerateSectionDraftInput = {
     specificationName: string;
+    sectionSlug: string;
     sectionTitle: string;
     existingContent: string;
     instructions: string;
