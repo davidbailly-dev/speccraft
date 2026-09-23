@@ -3,7 +3,7 @@ export type SectionLevel = 'section' | 'subsection';
 // Format de rédaction attendu pour le contenu généré par IA (cf. src/lib/ai/gemini.ts) :
 // un choix explicite par section plutôt que laissé à l'appréciation du modèle à chaque appel,
 // pour un résultat cohérent d'une génération à l'autre.
-export type SectionContentFormat = 'paragraph' | 'list';
+export type SectionContentFormat = 'paragraph' | 'list' | 'steps';
 
 export type SectionCatalogueEntry = {
     slug: string;
@@ -35,7 +35,7 @@ export const specificationCatalogue: SectionCatalogueEntry[] = [
     { slug: 'priorite-basse', title: 'Priorité basse', level: 'subsection', parentSlug: 'besoins-fonctionnels', order: 11, contentFormat: 'list' },
     { slug: 'besoins-non-fonctionnels', title: 'Besoins non fonctionnels', level: 'section', parentSlug: null, order: 12, contentFormat: 'list' },
     { slug: 'contraintes-dependances', title: 'Contraintes & dépendances', level: 'section', parentSlug: null, order: 13, contentFormat: 'list' },
-    { slug: 'parcours-utilisateur', title: 'Parcours utilisateur', level: 'section', parentSlug: null, order: 14, contentFormat: 'paragraph' },
+    { slug: 'parcours-utilisateur', title: 'Parcours utilisateur', level: 'section', parentSlug: null, order: 14, contentFormat: 'steps' },
     { slug: 'architecture-technique', title: 'Architecture & aspects techniques', level: 'section', parentSlug: null, order: 15, contentFormat: 'list' },
     { slug: 'livrables-validation', title: 'Livrables & validation', level: 'section', parentSlug: null, order: 16, contentFormat: 'list' },
     { slug: 'planning-suivi', title: 'Planning & suivi', level: 'section', parentSlug: null, order: 17, contentFormat: 'list' },

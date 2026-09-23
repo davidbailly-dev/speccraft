@@ -29,10 +29,12 @@ function buildPrompt({
     // au choix du modèle : résultat cohérent d'une génération à l'autre pour une même section.
     const contentFormat = specificationCatalogue.find((entry) => entry.slug === sectionSlug)?.contentFormat ?? 'paragraph';
 
-    const formatInstruction =
-        contentFormat === 'list'
-            ? 'Réponds uniquement avec une liste à puces Markdown (une ligne par item, commençant par "- "), en français, de façon claire et professionnelle, sans titre.'
-            : "Réponds uniquement avec le texte de la section, en français, de façon claire et professionnelle, sans titre ni formatage Markdown.";
+    const formatInstructions: Record<typeof contentFormat, string> = {
+        paragraph: "Réponds uniquement avec le texte de la section, en français, de façon claire et professionnelle, sans titre ni formatage Markdown.",
+        list: 'Réponds uniquement avec une liste à puces Markdown (une ligne par item, commençant par "- "), en français, de façon claire et professionnelle, sans titre.',
+        steps: 'Réponds uniquement avec une liste à étapes numérotées Markdown (une ligne par étape, au format "N. **Titre court de l\'étape** — description en une phrase"), en français, dans l\'ordre chronologique du parcours, sans titre.',
+    };
+    const formatInstruction = formatInstructions[contentFormat];
 
     const parts = [
         `Tu rédiges le contenu de la section "${sectionTitle}" d'un cahier des charges structuré nommé "${specificationName}".`,
