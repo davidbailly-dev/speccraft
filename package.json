@@ -1,6 +1,6 @@
 {
   "name": "speccraft",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "private": true,
   "description": "Outil de rédaction et de maintenance de cahiers des charges structurés",
   "author": "David Bailly",
