@@ -72,6 +72,7 @@ function SectionEditor({
         try {
             const content = await generateDraft({
                 specificationName,
+                sectionSlug: entry.slug,
                 sectionTitle: entry.title,
                 existingContent: value,
                 instructions,
@@ -212,6 +213,7 @@ export function SpecificationDetail({ id }: { id: string }) {
                 const baseline = edits[entry.slug] ?? baselineContent(sectionsBySlug.get(entry.slug));
                 const content = await generateSectionDraft({
                     specificationName: specification.name,
+                    sectionSlug: entry.slug,
                     sectionTitle: entry.title,
                     existingContent: baseline,
                     instructions: globalBrief,
