@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { specificationCatalogue } from './catalogue';
+import { specificationContentFixtures } from './content-fixtures';
 import type { Dataset, Section, Specification } from './schemas';
 
 const SEED = 424242;
@@ -29,12 +30,18 @@ const PROJECT_NAMES = [
     'Système de réservation en ligne',
 ];
 
-function generateSectionContent(level: 'section' | 'subsection'): string {
-    const paragraphCount = level === 'subsection' ? 1 : faker.number.int({ min: 1, max: 2 });
-    return faker.lorem.paragraphs(paragraphCount, '\n\n');
+// Ajoutée au contenu d'un brouillon qui coexiste avec une publication existante : montre un
+// brouillon qui diverge réellement du contenu publié, plutôt qu'un doublon identique.
+const DRAFT_IN_PROGRESS_NOTE = "\n\n(Brouillon : révision en cours, à valider avant republication.)";
+
+function generateSectionContent(projectName: string, slug: string): string {
+    // Contenu réaliste écrit à la main (content-fixtures.ts) plutôt que du Lorem Ipsum ;
+    // le repli n'a normalement pas lieu, PROJECT_NAMES et le catalogue couvrant tous les cas.
+    return specificationContentFixtures[projectName]?.[slug] ?? faker.lorem.paragraphs(1, '\n\n');
 }
 
 function buildSections(
+    projectName: string,
     specificationId: string,
     isPublished: boolean,
     hasPendingDrafts: boolean,
@@ -51,13 +58,14 @@ function buildSections(
     return specificationCatalogue.map((entry) => {
         // Jamais publié : tout est encore en brouillon (rien à afficher côté publié).
         const isDraft = !isPublished || draftSlugs.includes(entry.slug);
+        const content = generateSectionContent(projectName, entry.slug);
 
         return {
             id: faker.string.uuid(),
             specificationId,
             slug: entry.slug,
-            publishedContent: isPublished ? generateSectionContent(entry.level) : '',
-            draftContent: isDraft ? generateSectionContent(entry.level) : null,
+            publishedContent: isPublished ? content : '',
+            draftContent: isDraft ? (isPublished ? `${content}${DRAFT_IN_PROGRESS_NOTE}` : content) : null,
             updatedAt: faker.date.between({ from: createdAt, to: now }).toISOString(),
         };
     });
@@ -90,7 +98,7 @@ export function generateDataset(now: Date = new Date()): Dataset {
             publishedAt: publishedAt ? publishedAt.toISOString() : null,
         });
 
-        sections.push(...buildSections(id, isPublished, hasPendingDrafts, createdAt, now));
+        sections.push(...buildSections(name, id, isPublished, hasPendingDrafts, createdAt, now));
     });
 
     return { specifications, sections };
