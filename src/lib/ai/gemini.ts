@@ -52,6 +52,10 @@ export async function generateSectionDraft(input: GenerateSectionDraftInput): Pr
         if (response.status === 429) {
             throw new GeminiRequestError('Quota IA gratuit dépassé, réessaie plus tard.', 429);
         }
+        if (response.status === 503) {
+            // Fréquent sur le tier gratuit : le modèle flash est sollicité par tous ses utilisateurs gratuits.
+            throw new GeminiRequestError('Modèle IA très sollicité (tier gratuit), réessaie dans quelques secondes.', 503);
+        }
         throw new GeminiRequestError('Le service IA est momentanément indisponible.', 502);
     }
 
