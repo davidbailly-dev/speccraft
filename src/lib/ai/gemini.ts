@@ -1,8 +1,8 @@
 import type { GenerateSectionDraftInput } from './schemas';
 
-// Alias de modèle géré par Google : pointe vers la version flash courante,
-// évite de coder en dur un nom de version qui sera déprécié.
-const GEMINI_MODEL = process.env.GEMINI_MODEL ?? 'gemini-flash-latest';
+// `gemini-2.5-flash` plutôt que l'alias `gemini-flash-latest` : ce dernier a pointé en test
+// vers un modèle très récent au quota gratuit nettement plus restrictif (nombreux 503/429).
+const GEMINI_MODEL = process.env.GEMINI_MODEL ?? 'gemini-2.5-flash';
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 export class GeminiConfigError extends Error {}
