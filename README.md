@@ -1,5 +1,8 @@
 # SpecCraft
 
+![ScreenshotSpecsList](assets/screenshot-specs-list.png)
+![ScreenshotSpecPage](assets/screenshot-spec-page.png)
+
 SpecCraft est un outil de rédaction et de maintenance de cahiers des charges structurés pour des projets de développement informatique.
 
 **Démo en ligne :** [speccraft-ww9f.onrender.com](https://speccraft-ww9f.onrender.com)
