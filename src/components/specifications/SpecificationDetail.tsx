@@ -154,6 +154,12 @@ export function SpecificationDetail({ id }: { id: string }) {
     const [edits, setEdits] = useState<Record<string, string>>({});
     const { mutateAsync: saveDraftSection, isPending: isSaving } = useSaveDraftSection();
     const { mutateAsync: publishSpecification, isPending: isPublishing } = usePublishSpecification();
+    const { mutateAsync: generateSectionDraft } = useGenerateSectionDraft();
+
+    const [isGlobalAiPanelOpen, setIsGlobalAiPanelOpen] = useState(false);
+    const [globalBrief, setGlobalBrief] = useState('');
+    const [globalProgress, setGlobalProgress] = useState<{ current: number; total: number } | null>(null);
+    const [globalError, setGlobalError] = useState<string | null>(null);
 
     const sectionsBySlug = new Map(specification?.sections.map((section) => [section.slug, section]));
 
@@ -184,6 +190,33 @@ export function SpecificationDetail({ id }: { id: string }) {
         await publishSpecification(specification.id);
     }
 
+    async function handleGenerateAll() {
+        if (!specification) return;
+        setGlobalError(null);
+        setGlobalProgress({ current: 0, total: specificationCatalogue.length });
+        try {
+            // Séquentiel plutôt qu'en parallèle : reste sous le quota gratuit par minute
+            // même pour un cahier des charges avec beaucoup de sections.
+            for (const [index, entry] of specificationCatalogue.entries()) {
+                const baseline = edits[entry.slug] ?? baselineContent(sectionsBySlug.get(entry.slug));
+                const content = await generateSectionDraft({
+                    specificationName: specification.name,
+                    sectionTitle: entry.title,
+                    existingContent: baseline,
+                    instructions: globalBrief,
+                });
+                setEdits((previous) => ({ ...previous, [entry.slug]: content }));
+                setGlobalProgress({ current: index + 1, total: specificationCatalogue.length });
+            }
+            setIsGlobalAiPanelOpen(false);
+        } catch (error) {
+            // Les sections déjà générées avant l'erreur restent dans `edits` (brouillon, non perdu).
+            setGlobalError(error instanceof Error ? error.message : 'Erreur inattendue lors de la génération IA');
+        } finally {
+            setGlobalProgress(null);
+        }
+    }
+
     return (
         <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -196,6 +229,17 @@ export function SpecificationDetail({ id }: { id: string }) {
                 </Link>
                 <div className="flex flex-wrap items-center gap-2">
                     {specification && <ExportMarkdownButton specification={specification} />}
+                    {specification && (
+                        <button
+                            type="button"
+                            onClick={() => setIsGlobalAiPanelOpen((open) => !open)}
+                            disabled={globalProgress !== null}
+                            className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium transition-colors hover:border-accent/40 hover:bg-surface-hover disabled:cursor-default disabled:opacity-50"
+                        >
+                            <Sparkles size={16} />
+                            Pré-remplir avec l&apos;IA
+                        </button>
+                    )}
                     {dirtySlugs.length > 0 && (
                         <button
                             type="button"
@@ -232,6 +276,41 @@ export function SpecificationDetail({ id }: { id: string }) {
                                 ` · publié le ${formatDate(specification.publishedAt)}`}
                         </p>
                     </header>
+
+                    {isGlobalAiPanelOpen && (
+                        <Card>
+                            <p className="text-sm font-medium">Pré-remplir toutes les sections avec l&apos;IA</p>
+                            <textarea
+                                value={globalBrief}
+                                onChange={(event) => setGlobalBrief(event.target.value)}
+                                rows={2}
+                                placeholder="Brief du projet (2-3 phrases) — contexte, objectif, périmètre…"
+                                disabled={globalProgress !== null}
+                                className="w-full resize-y rounded-lg border border-border bg-transparent p-3 text-sm outline-none focus:border-accent disabled:opacity-50"
+                            />
+                            <div className="flex items-center gap-3">
+                                <button
+                                    type="button"
+                                    onClick={handleGenerateAll}
+                                    disabled={globalProgress !== null}
+                                    className="cursor-pointer rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-colors hover:bg-accent-hover disabled:cursor-default disabled:opacity-50"
+                                >
+                                    {globalProgress
+                                        ? `Génération… (${globalProgress.current}/${globalProgress.total})`
+                                        : 'Générer toutes les sections'}
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsGlobalAiPanelOpen(false)}
+                                    disabled={globalProgress !== null}
+                                    className="cursor-pointer text-sm text-muted hover:text-foreground disabled:opacity-50"
+                                >
+                                    Annuler
+                                </button>
+                            </div>
+                            {globalError && <p className="text-sm text-warning">{globalError}</p>}
+                        </Card>
+                    )}
 
                     <div className="flex flex-col gap-6">
                         {specificationCatalogue.map((entry) => {
