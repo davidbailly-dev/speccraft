@@ -20,6 +20,13 @@ function baselineContent(section: Section | undefined): string {
     return section.draftContent ?? section.publishedContent;
 }
 
+// Marge sous les 15 req/min du modèle Gemini par défaut (gemini-3.1-flash-lite, cf. src/lib/ai/gemini.ts).
+const MIN_DELAY_BETWEEN_AI_CALLS_MS = 4_500;
+
+function wait(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 type SectionStatus = 'unsaved' | 'draft' | null;
 
 function SectionStatusBadge({ status }: { status: SectionStatus }) {
@@ -194,10 +201,14 @@ export function SpecificationDetail({ id }: { id: string }) {
         if (!specification) return;
         setGlobalError(null);
         setGlobalProgress({ current: 0, total: specificationCatalogue.length });
-        try {
-            // Séquentiel plutôt qu'en parallèle : reste sous le quota gratuit par minute
-            // même pour un cahier des charges avec beaucoup de sections.
-            for (const [index, entry] of specificationCatalogue.entries()) {
+        const failedTitles: string[] = [];
+
+        // Séquentiel et espacé (pas en parallèle) : le modèle par défaut est plafonné à
+        // 15 requêtes/minute sur le tier gratuit, en dessous du nombre de sections du catalogue.
+        for (const [index, entry] of specificationCatalogue.entries()) {
+            if (index > 0) await wait(MIN_DELAY_BETWEEN_AI_CALLS_MS);
+
+            try {
                 const baseline = edits[entry.slug] ?? baselineContent(sectionsBySlug.get(entry.slug));
                 const content = await generateSectionDraft({
                     specificationName: specification.name,
@@ -206,14 +217,20 @@ export function SpecificationDetail({ id }: { id: string }) {
                     instructions: globalBrief,
                 });
                 setEdits((previous) => ({ ...previous, [entry.slug]: content }));
-                setGlobalProgress({ current: index + 1, total: specificationCatalogue.length });
+            } catch {
+                // Un échec ponctuel (quota, surcharge) ne doit pas bloquer les sections suivantes ;
+                // la section reste relançable individuellement via son propre bouton IA.
+                failedTitles.push(entry.title);
             }
+
+            setGlobalProgress({ current: index + 1, total: specificationCatalogue.length });
+        }
+
+        setGlobalProgress(null);
+        if (failedTitles.length > 0) {
+            setGlobalError(`Échec pour : ${failedTitles.join(', ')}. Relance-les individuellement via le bouton IA de la section.`);
+        } else {
             setIsGlobalAiPanelOpen(false);
-        } catch (error) {
-            // Les sections déjà générées avant l'erreur restent dans `edits` (brouillon, non perdu).
-            setGlobalError(error instanceof Error ? error.message : 'Erreur inattendue lors de la génération IA');
-        } finally {
-            setGlobalProgress(null);
         }
     }
 
