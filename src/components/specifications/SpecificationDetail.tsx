@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Sparkles } from 'lucide-react';
 import { useSpecification } from '@/lib/queries/useSpecification';
 import { useSaveDraftSection } from '@/lib/queries/useSaveDraftSection';
 import { usePublishSpecification } from '@/lib/queries/usePublishSpecification';
+import { useGenerateSectionDraft } from '@/lib/queries/useGenerateSectionDraft';
 import { ExportMarkdownButton } from './ExportMarkdownButton';
 import { PageTitle } from '@/components/ui/PageTitle';
 import { Card } from '@/components/ui/Card';
@@ -46,26 +47,99 @@ function SectionEditor({
     status,
     value,
     onChange,
+    specificationName,
 }: {
     entry: SectionCatalogueEntry;
     status: SectionStatus;
     value: string;
     onChange: (value: string) => void;
+    specificationName: string;
 }) {
     const HeadingTag = entry.level === 'section' ? 'h2' : 'h3';
+    const [isAiPanelOpen, setIsAiPanelOpen] = useState(false);
+    const [instructions, setInstructions] = useState('');
+    const [isAiGenerated, setIsAiGenerated] = useState(false);
+    const { mutateAsync: generateDraft, isPending: isGenerating, error: generationError } = useGenerateSectionDraft();
+
+    async function handleGenerate() {
+        try {
+            const content = await generateDraft({
+                specificationName,
+                sectionTitle: entry.title,
+                existingContent: value,
+                instructions,
+            });
+            onChange(content);
+            setIsAiGenerated(true);
+            setIsAiPanelOpen(false);
+        } catch {
+            // Erreur déjà exposée via `generationError` pour l'affichage dans le panneau.
+        }
+    }
+
+    function handleManualChange(newValue: string) {
+        setIsAiGenerated(false);
+        onChange(newValue);
+    }
 
     return (
         <div className={entry.level === 'subsection' ? 'pl-5' : ''}>
             <Card>
-                <div className="flex items-center gap-2">
-                    <HeadingTag className={entry.level === 'section' ? 'text-lg font-semibold' : 'text-base font-medium'}>
-                        {entry.title}
-                    </HeadingTag>
-                    <SectionStatusBadge status={status} />
+                <div className="flex items-center justify-between gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                        <HeadingTag className={entry.level === 'section' ? 'text-lg font-semibold' : 'text-base font-medium'}>
+                            {entry.title}
+                        </HeadingTag>
+                        <SectionStatusBadge status={status} />
+                        {isAiGenerated && status === 'unsaved' && (
+                            <span className="rounded-full bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
+                                Généré par IA
+                            </span>
+                        )}
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => setIsAiPanelOpen((open) => !open)}
+                        className="inline-flex shrink-0 cursor-pointer items-center gap-1 rounded-lg border border-border px-2 py-1 text-xs font-medium text-muted transition-colors hover:border-accent/40 hover:text-foreground"
+                    >
+                        <Sparkles size={14} />
+                        IA
+                    </button>
                 </div>
+
+                {isAiPanelOpen && (
+                    <div className="flex flex-col gap-2 rounded-lg border border-border bg-surface-hover p-3">
+                        <input
+                            type="text"
+                            value={instructions}
+                            onChange={(event) => setInstructions(event.target.value)}
+                            placeholder="Consigne optionnelle (ex : ton, points à couvrir…)"
+                            className="w-full rounded-lg border border-border bg-transparent px-3 py-2 text-sm outline-none focus:border-accent"
+                        />
+                        <div className="flex items-center gap-3">
+                            <button
+                                type="button"
+                                onClick={handleGenerate}
+                                disabled={isGenerating}
+                                className="cursor-pointer rounded-lg bg-accent px-3 py-1.5 text-xs font-medium text-accent-foreground transition-colors hover:bg-accent-hover disabled:cursor-default disabled:opacity-50"
+                            >
+                                {isGenerating ? 'Génération…' : value.trim() ? 'Régénérer' : 'Générer'}
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setIsAiPanelOpen(false)}
+                                className="cursor-pointer text-xs text-muted hover:text-foreground"
+                            >
+                                Annuler
+                            </button>
+                        </div>
+                        {generationError && <p className="text-xs text-warning">{generationError.message}</p>}
+                    </div>
+                )}
+
                 <textarea
                     value={value}
-                    onChange={(event) => onChange(event.target.value)}
+                    onChange={(event) => handleManualChange(event.target.value)}
                     rows={entry.level === 'section' ? 4 : 3}
                     placeholder="Section vide."
                     className="w-full resize-y rounded-lg border border-border bg-transparent p-3 text-sm outline-none focus:border-accent"
@@ -179,6 +253,7 @@ export function SpecificationDetail({ id }: { id: string }) {
                                     onChange={(newValue) =>
                                         setEdits((previous) => ({ ...previous, [entry.slug]: newValue }))
                                     }
+                                    specificationName={specification.name}
                                 />
                             );
                         })}
