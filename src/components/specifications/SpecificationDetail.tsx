@@ -8,6 +8,7 @@ import { useSaveDraftSection } from '@/lib/queries/useSaveDraftSection';
 import { usePublishSpecification } from '@/lib/queries/usePublishSpecification';
 import { useGenerateSectionDraft } from '@/lib/queries/useGenerateSectionDraft';
 import { ExportMarkdownButton } from './ExportMarkdownButton';
+import { SectionIcon } from './SectionIcon';
 import { PageTitle } from '@/components/ui/PageTitle';
 import { Card } from '@/components/ui/Card';
 import { specificationCatalogue, type SectionCatalogueEntry } from '@/lib/mock-data/catalogue';
@@ -95,7 +96,14 @@ function SectionEditor({
             <Card>
                 <div className="flex items-center justify-between gap-2">
                     <div className="flex flex-wrap items-center gap-2">
-                        <HeadingTag className={entry.level === 'section' ? 'text-lg font-semibold' : 'text-base font-medium'}>
+                        <HeadingTag
+                            className={
+                                entry.level === 'section'
+                                    ? 'flex items-center gap-2 text-lg font-semibold'
+                                    : 'text-base font-medium'
+                            }
+                        >
+                            {entry.level === 'section' && <SectionIcon slug={entry.slug} />}
                             {entry.title}
                         </HeadingTag>
                         <SectionStatusBadge status={status} />
